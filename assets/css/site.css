@@ -1,0 +1,12 @@
+.post {
+    border: 1px solid #ddd;
+    padding: 6px;
+}
+.post-avatar {
+    width: 60px;
+    height: 60px;
+    background: lightgray;
+}
+.action-links {
+    padding-left: 6px !important;
+}
