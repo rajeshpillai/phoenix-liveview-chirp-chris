@@ -6,6 +6,7 @@ defmodule ChirpWeb.PostLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Timeline.subscribe()
     {:ok, assign(socket, :posts, list_posts())}
   end
 
@@ -38,6 +39,13 @@ defmodule ChirpWeb.PostLive.Index do
     {:ok, _} = Timeline.delete_post(post)
 
     {:noreply, assign(socket, :posts, list_posts())}
+  end
+
+
+  # Pub/sub messages is handled by handle_info
+  @impl true
+  def handle_info({:post_created, post}, socket) do
+    {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}  # Take existing posts and prepend new post
   end
 
   defp list_posts do
